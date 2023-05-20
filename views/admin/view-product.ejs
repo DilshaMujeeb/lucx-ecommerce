@@ -1,0 +1,65 @@
+<section class="">
+  <div class="container d-flex justify-content-center">
+    <div class="row w-75 mt-5">
+      <div class="col-md-12">
+        <h2 class="text-center">Product List</h2>
+        <!-- <a href="/admin/add-offer" class="btn btn-primary float-end mb-3">Add Offer</a> <! Add Offer button --> 
+        <form method="POST" enctype="multipart/form-data">
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Table section -->
+<section mx-auto>
+  <div class="card-body">
+    <div class="row mt-5 mx-auto">
+      <div class="table-responsive">
+        <div class="table-responsive">
+          <table class="table align-middle table-nowrap mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="align-middle" scope="col">No:</th>
+                <th class="align-middle" scope="col">Image</th>
+                <th class="align-middle" scope="col">product Name</th>
+                <th class="align-middle" scope="col">Category</th>
+                <th class="align-middle" scope="col">price</th>
+                <th class="align-middle" scope="col">Quantity</th>
+                <th class="align-middle" scope="col">option</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% response.forEach(function(response, index) { %>
+              <tr>
+                <td><%= index + 1 %> </td>
+                <td><img src='/uploads/<%= response.Image[0] %>' alt="" style="width:50px;height:50px";></td>
+                <td>
+                  <p><%= response.Productname %></p>
+                  <small><%= response.ProductDescription %></small>
+                </td>
+                <td><%= response.category %></td>
+                <td><%= response.Price %></td>
+                <td><%= response.Quantity %></td>
+                
+                
+                <td>
+                  <a href="/admin/edit-product/<%= response._id %>" class="btn btn-xs btn-success">Edit</a>
+                 <% if (response.unlist) { %>
+                      <a href="/admin/list-product/<%= response._id %>" class="btn btn-xs btn-danger" >List</a>
+                    <% } else { %>
+                      <a href="/admin/unlist-product/<%= response._id %>" class="btn btn-xs btn-danger"  onclick="return confirm('Are you sure to unlist <%= response.Productname %> ?')">Unlist</a>
+                    <% } %>
+
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- table-responsive end// -->
+    </div>
+  </div>
+</section>
+
+

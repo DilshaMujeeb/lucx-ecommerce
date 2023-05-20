@@ -1,0 +1,62 @@
+<body>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="/user-dash"class="nav-link active">Dashboard</a></li>
+          <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
+          <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
+          <li class="list-group-item"><a href="/address" class="nav-link">My Address</a></li>
+          <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
+          <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <h2 class="mt-5 mb-4">Saved Addresses</h2>
+        <div class="row">
+          <% address.forEach(function(address) { %>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><%= address.name %></h5>
+                  <p class="card-text"><%= address.phone %></p>
+                   <p class="card-text"><%= address.homeAddress %></p>
+                    <p class="card-text"><%= address.homeAddress2 %></p>
+                  <p class="card-text"><%= address.city %> - <%= address.state %></p>
+                  <p class="card-text"><%= address.zip %></p>
+                  <div class="d-flex justify-content-between">
+                    <a href="/editAddress/<%= address._id %>" class="btn btn-primary">Edit</a>
+     <a class="btn btn-danger" onclick="deleteAddress('<%= address._id %>')">Delete</a>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        <div class="mt-5">
+           <div class="col-md-12 d-flex justify-content-end">
+            <a href="/add-addresspro" class="btn btn-primary">Add New Address</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+  <script>
+        function deleteAddress(addressId){
+
+            $.ajax({
+                url:`/delete-address/${addressId}`,
+                method:'get',
+                success:(response)=>{
+                    location.reload()
+                }
+            })
+        }
+    </script>

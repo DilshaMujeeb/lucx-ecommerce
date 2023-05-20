@@ -1,0 +1,60 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="/user-dash" class="nav-link active">Dashboard</a></li>
+          <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
+          <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
+          <li class="list-group-item"><a href="/address"  class="nav-link">My Address</a></li>
+          <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
+          <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+                
+              Wallet Balance
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Current Balance: ₹<%= balance[0].balance %></h4>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              Wallet History
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% history.forEach(function(history) { %>
+                    <tr>
+                      <td><%= history.date.toDateString() %></td>
+                      <td><%= history.description %></td>
+                      <td>₹<%= history.amount %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="/user-dash" class="nav-link">Dashboard</a></li>
+            <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
+            <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
+            <li class="list-group-item"><a href="/address" class="nav-link active">My Address</a></li>
+            <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
+            <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="container">
+          <h2 class="mt-5 mb-4">Add Address</h2>
+          <form action="/submit-address" method="post" id="address">
+            
+                            <div class="form-group">
+                              <label for="name">First Name *</label>
+                              <input type="text" name="name" id="name" placeholder="Enter your first name"
+                                onblur="namecheck()" required>
+                              <label id="nmlabel" for="name" style="display: none; color:red;">This field is
+                                required</label>
+                              <label id="nmlabel-01" for="name" style="display: none; color:red;">Name doesn't start
+                                with a number</label>
+                              <label id="nmlabel-02" for="name" style="display: none; color:red;">Name doesn't contain
+                                special characters</label>
+                            </div>
+                            <div class="form-group">
+                              <label for="phone">Phone *</label>
+                              <input type="tel" name="phone" id="phone"  placeholder="Enter your phone number"
+                                onblur="phonecheck()" required>
+                              <label id="ml" for="phone" style="display: none; color:red;">This field is
+                                required</label>
+                              <label id="ml-01" for="phone" style="display: none; color:red;">Minimum 10
+                                digits required</label>
+  
+                            </div>
+                            <div class="form-group">
+                              <label for="address">Address *</label>
+                              <input type="text" name="billing_address" id="address"   placeholder="Enter your address"  onblur="addresscheck()" required>
+                              <label id="adlabel" for="address" style="display: none; color:red;">This field is
+                                required</label>
+                              <label id="adlabel-01" for="address" style="display: none; color:red;">Address doesn't start
+                                with a number</label>
+                              <label id="adlabel-02" for="address" style="display: none; color:red;">Address doesn't contain
+                                special characters</label>
+  
+                            </div>
+                            <div class="form-group">
+                              <label for="address2">Address Line 2</label>
+                              <input type="text" name="billing_address2" id="address2"
+                                placeholder="Enter your address line 2">
+                            </div>
+                            <div class="form-group">
+                              <label for="city">City/Town *</label>
+                              <input type="text" name="city" id="city" required placeholder="Enter your city/town">
+  
+                            </div>
+                            <div class="form-group">
+                              <label for="state">State/County *</label>
+                              <input type="text" name="state" id="state" required placeholder="Enter your state/county">
+  
+                            </div>
+                            <div class="form-group">
+                              <label for="zipcode">Postcode/ZIP *</label>
+                              <input type="text" name="zipcode" id="zipcode" required
+                                placeholder="Enter your postcode/ZIP">
+  
+                            </div>
+                            <button type="submit" class="btn btn-success mt-4">Submit</button>
+                          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

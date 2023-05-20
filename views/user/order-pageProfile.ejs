@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="/user-dash" class="nav-link active">Dashboard</a></li>
+          <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
+          <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
+          <li class="list-group-item"><a href="/address" class="nav-link">My Address</a></li>
+          <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
+          <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <table class="table mt-5" id="ordersTable">
+          <thead>
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Date</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody> 
+          <% orders.forEach(function(order) { %>
+            <tr>
+              <td><%= order.hashedId %></td>
+              <td><%= order.date.toDateString() %></td>
+              <td><%= order.paymentMethod %></td>
+              <td><%= order.status %></td>
+              <td>₹<%= order.total %></td>
+    
+              <td>
+                <a href="/view-order-products/<%= order._id %>" class="btn btn-primary">View</a>
+              </td>
+            </tr>
+  <%})%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Highlight the active link
+  const navLinks = document.querySelectorAll('.nav-link');
+  const currentUrl = window.location.href;
+
+  navLinks.forEach((link) => {
+    if (link.href === currentUrl) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+</script>

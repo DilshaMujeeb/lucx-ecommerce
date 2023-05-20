@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>LUCKX</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="/assets/imgs/theme/logo.png"
+            />
+        <!-- Template CSS -->
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ 
+    <!-- other scripts -->
+</head>
+
+    
+        <title>Welcome</title>
+    
+    <body>
+
+
+
+
+
+        <%- include('partials/userHeader') %>
+
+            <%-body%>
+            
+
+
+                <%- include('partials/userFooter')%>
+
+                <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+
+                    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+                    <script src="/js/vendor/jquery-3.6.0.min.js"></script>
+                    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+                    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+                    <script src="/assets/js/plugins/slick.js"></script>
+                    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+                    <script src="/assets/js/plugins/wow.js"></script>
+                    <script src="/assets/js/plugins/jquery-ui.js"></script>
+                    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+                    <script src="/assets/js/plugins/magnific-popup.js"></script>
+                    <script src="/assets/js/plugins/select2.min.js"></script>
+                    <script src="/assets/js/plugins/waypoints.js"></script>
+                    <script src="/assets/js/plugins/counterup.js"></script>
+                    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+                    <script src="/assets/js/plugins/images-loaded.js"></script>
+                    <script src="/assets/js/plugins/isotope.js"></script>
+                    <script src="/assets/js/plugins/scrollup.js"></script>
+                    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+                    <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
+                    <script src="/assets/js/plugins/jquery.elevatezoom.js"></script>
+                    <!-- Template  JS -->
+                    <script src="/assets/js/main.js"></script>
+                    <script src="/assets/js/shop.js"></script>
+
+
+
+                    <script
+                        src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+                    <script
+                        src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+                    <script src="/javascripts/script.js"></script>
+
+<script>
+        
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA5zqz42k376USKF7zZ8NjmjekKJ7Ddg5U",
+  authDomain: "purplle-61eee.firebaseapp.com",
+  projectId: "purplle-61eee",
+  storageBucket: "purplle-61eee.appspot.com",
+  messagingSenderId: "652775906008",
+  appId: "1:652775906008:web:2b0ebcea78125bd3e055ad",
+  measurementId: "G-4RWTX1271P"
+};
+
+        firebase.initializeApp(firebaseConfig);
+        render();
+/*
+        function render(){
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',{
+                'size':'invisible',
+                'callback':(response)=>{
+                    onSignInSubmit()
+                }
+            })
+            recaptchaVerifier.render();
+        }
+		*/
+
+   function render(){
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container')
+        
+            recaptchaVerifier.render();
+        }
+        
+        function phoneAuth(){
+            var number = "+91"+document.getElementById('mobile').value;
+			
+            firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function(confirmationResult){
+                window.confirmationResult = confirmationResult;
+                coderesult = confirmationResult;
+				
+                document.getElementById('sender').style.display = 'none';
+                document.getElementById('verifier').style.display = 'block';
+            }).catch(function(error){
+                console.log(error.message);
+            });
+        }
+        
+        // Function for OTP verification
+        function codeverify(){
+            var code = document.getElementById('OtpField').value;
+			var number = document.getElementById('mobile').value;
+            coderesult.confirm(code).then(function(){
+                document.getElementById('verified').style.display = 'block';
+                document.getElementById('unVerified').style.display = 'none';
+				document.getElementById('verifier').style.display = 'none';
+				document.getElementById('signInBtn').style.display = 'block';
+
+				document.getElementById('mobileNum').value = number;
+				
+            }).catch(function(){
+                document.getElementById('verified').style.display = 'none';
+                document.getElementById('unVerified').style.display = 'block';
+				document.getElementById('signInBtn').style.display = 'none';
+            })
+        }
+
+
+</script>
+
+
+    <script>
+      $(document).ready(()=>{
+        console.log(location.hash)
+        if(location.hash === '#address') {
+                  console.log('clicked')
+                  $('#dashboard-tab').removeClass('active')
+                  $('#address-tab').addClass('active')
+                  console.log($('#dashboard-tab'))
+                  console.log( $('#address-tab'))
+                  $('#dashboard').removeClass('active')
+                    $('#dashboard').removeClass('show')
+                  $('#address').addClass('show')
+                  $('#address').addClass('active')
+                     console.log($('#dashboard'))
+                  console.log($('#address'))
+               
+        }
+      })
+    </script>
+               
+
+    <script>
+        function deleteAddress(addressId){
+
+            $.ajax({
+                url:`/delete-address/${addressId}`,
+                method:'get',
+                success:(response)=>{
+                    location.reload()
+                }
+            })
+        }
+    </script>
+
+  
+
+
+                </body>
+            </html>

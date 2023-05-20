@@ -1,0 +1,31 @@
+<section>
+    <div class="container">
+      <table class="table mt-5" id="ordersTable">
+        <thead>
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Date</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody> 
+          <% orders.forEach(function(order) { %>
+            <tr>
+              <td><%= order.hashedId %></td>
+              <td><%= order.date.toDateString() %></td>
+              <td><%= order.paymentMethod %></td>
+              <td><%= order.status %></td>
+              <td>₹<%= order.total %></td>
+    
+              <td>
+                <a href="/view-order-products/<%= order._id %>" class="btn btn-primary">View</a>
+              </td>
+            </tr>
+  <%})%>
+          </tbody>
+      </table>
+    </div>
+  </section>

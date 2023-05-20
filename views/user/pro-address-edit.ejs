@@ -1,0 +1,56 @@
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="/user-dash" class="nav-link">Dashboard</a></li>
+            <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
+            <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
+            <li class="list-group-item"><a href="/address" class="nav-link active">My Address</a></li>
+            <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
+            <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="container">
+          <h2 class="mt-5 mb-4">Edit Address</h2>
+          <form action="/edit-address/<%= address._id %>" method="POST">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= address.name %>" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone:</label>
+              <input type="tel" class="form-control" id="phone" name="phone" value="<%= address.phone %>" required>
+            </div>
+            <div class="form-group">
+              <label for="homeAddress">Address Line 1:</label>
+              <input type="text" class="form-control" id="homeAddress" name="homeAddress" value="<%= address.homeAddress %>" required>
+            </div>
+            <div class="form-group">
+              <label for="homeAddress2">Address Line 2:</label>
+              <input type="text" class="form-control" id="homeAddress2" name="homeAddress2" value="<%= address.homeAddress2 %>">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="city">City:</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%= address.city %>" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="state">State:</label>
+                <input type="text" class="form-control" id="state" name="state" value="<%= address.state %>" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="zip">Zip Code:</label>
+              <input type="text" class="form-control" id="zip" name="zip" value="<%= address.zip %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

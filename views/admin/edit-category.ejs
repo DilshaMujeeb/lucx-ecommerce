@@ -1,0 +1,22 @@
+<section class="">
+  <div class="container d-flex justify-content-center">
+    <div class="row w-75 mt-5">
+      <div class="col-md-12">
+        <h2 class="text-center">EDIT Category</h2>
+        <form
+          action="/admin/edit_category/<%=editCat.id %>"
+          method="POST"
+         
+        >
+          <label for="">Category Name</label>
+          <input type="text" name="categoryname" class="form-control" value="<%= editCat.CategoryName %>"/>
+          <button type="submit" class="btn btn-success mt-4">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Table section -->
+
+  
+

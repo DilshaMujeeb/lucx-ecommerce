@@ -1,0 +1,101 @@
+<!-- shop.ejs -->
+   <div class="mobile-search search-style-3
+                              mobile-header-border" style="margin-left: 1000px;margin-right: 200px" >
+                              <form action="/shop" method="GET" class="search-form mb-30">
+                        <input type="text" name="search" placeholder="Search products..." value="<%=locals.searchQuery %>">
+                        <button type="submit" class="search-btn"><i class="fi-rs-search"></i></button>
+                    </form>
+                            </div>
+<main class="main">
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <!-- Search Form -->
+                    
+                         
+
+                          
+
+                    <!-- Filter Options -->
+                    
+                    <div class="row product-grid-3">
+                     <% products.forEach(function(product, index) { %>
+
+                            <!-- Product Item -->
+                            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <!-- Product Image -->
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="/zoomView/<%= product._id %>">
+                                                <img class="default-img" src="/uploads/<%= product.Image[0] %>" alt="">
+                                            </a>
+                                        </div>
+                                        <!-- Product Actions -->
+                                        <div class="product-action-1">
+                                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                                <i class="fi-rs-search"></i>
+                                            </a>
+                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html">
+                                                <i class="fi-rs-heart"></i>
+                                            </a>
+                                            <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html">
+                                                <i class="fi-rs-shuffle"></i>
+                                            </a>
+                                        </div>
+                                        <!-- Product Badges -->
+                                        <div class="product-badges product-badges-position product-badges-mrg">
+
+                                        </div>
+                                    </div>
+                                    <!-- Product Content -->
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a><%= product.category %></a>
+                                        </div>
+                                        <h2><a href="/zoomView/<%= product._id %>"><%= product.Productname %></a></h2>
+                                        <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>95%</span>
+                                            </span>
+                                        </div>
+                                        <div class="product-price">
+                                            <% if (product.hasDiscount) { %>
+                                                <span class="old-price">Rs.<%= product.Price %></span>
+                                                <span class="new-price">Rs.<%= product.discountedPrice %></span>
+                                            <% } else { %>
+                                                <span>Rs.<%= product.Price %></span>
+                                            <% } %>
+                                        </div>
+                                        <div class="product-action-1 show">
+                                            <a aria-label="Add To Cart" class="action-btn hover-up" onclick="addToCart('<%= product._id %>')">
+                                                <i class="fi-rs-shopping-bag-add"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Pagination -->
+                    
+                </div>
+
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-category mb-30">
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                        <ul class="categories">
+                            <% cat.forEach(function(cat, index) { %>
+                                <li>
+                                    <a href="/category/<%= cat._id %>"><%= cat.CategoryName %></a>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

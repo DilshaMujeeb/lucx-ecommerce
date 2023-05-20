@@ -1,0 +1,356 @@
+<main class="main">
+    <!-- <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Your Cart
+            </div>
+        </div>
+    </div> -->
+    
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center clean">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- productsinte ullile oru productum -->
+                                <% if (productExist) { %>
+                                    <% response.forEach(function(response) { %>
+        
+                                      <tr>
+                                          <td class="image product-thumbnail"><img src="/uploads/<%=response.proDetails[0].Image[0]%>" alt="#"></td>
+                                          <td class="product-des product-name">
+                                              <h5 class="product-name"><a href="/zoomView/<%= response.proDetails[0]._id %>"><%=response.proDetails[0].Productname%></a></h5>
+                                              <p class="font-xs"><%=response.proDetails[0].ProductDescription%>
+                                              </p>
+                                          </td>
+                                          <td class="price" data-title="Price">
+                                            <% if (response.proDetails[0].hasDiscount && response.proDetails[0].discountedPrice) { %>
+                                                <span class="price">Rs.<%= response.proDetails[0].discountedPrice %></span>
+                                              <% } else { %>
+                                                <span>Rs.<%=response.proDetails[0].Price%></span>
+                                              <% } %>                                              
+                                            </td>
+                                          <td class="text-center" data-title="Stock">
+                                              <div class="detail-qty border radius  m-auto">
+                                                
+                                                 <% if (response.proDetails[0].hasDiscount && response.proDetails[0].discountedPrice) { %>
+                                                
+                                                <a class="qty-up" onclick="cartQuantity('<%= response._id %>','<%= response.proDetails[0]._id%>','<%= response.proDetails[0].discountedPrice %>',1)">
+                                                    <i class="fi-rs-angle-small-up"></i>
+                                                </a>
+                                                   <span id="qty<%= response.proDetails[0]._id%>"><%= response.products.quantity %></span>
+                                                
+
+                                                <a class="qty-down" onclick="cartQuantity('<%= response._id %>','<%= response.proDetails[0]._id%>','<%= response.proDetails[0].discountedPrice %>',-1)">
+                                                    <i class="fi-rs-angle-small-down"></i>
+                                                </a>
+                                                <% } else { %>
+                                                
+                                                <a class="qty-up" onclick="cartQuantity('<%= response._id %>','<%= response.proDetails[0]._id%>','<%= response.proDetails[0].Price %>',1)">
+                                                    <i class="fi-rs-angle-small-up"></i>
+                                                </a>
+                                                  
+                                                   <span id="qty<%= response.proDetails[0]._id%>"><%= response.products.quantity %></span> 
+                                                <a class="qty-down" onclick="cartQuantity('<%= response._id %>','<%= response.proDetails[0]._id%>','<%= response.proDetails[0].Price %>',-1)">
+                                                    <i class="fi-rs-angle-small-down"></i>
+                                                </a>
+                                                  <% } %> 
+                                              </div>
+                                                  
+                                              </div>
+                                          </td>
+                                          
+                                          <td class="text-right" data-title="Cart">
+                                            
+                                            <span>₹ <span class="product-subtotal"  id="<%= response.proDetails[0]._id%>-subtotal"><%=response.subtotal%></span></span>
+                                          </td>
+                                          
+                                        
+                                          <!-- <td class="action" data-title="Remove"><a href="/delete-cart-product/<%=response.proDetails[0]._id%>" class="text-muted"><i class="fi-rs-trash"></i></a></td> -->
+                                                                               <td class="action" cartItemss-title="Remove">
+                                      <button
+                                        class="text-muted"
+                                        onclick="removeItem('<%=response.proDetails[0]._id%>')"
+                                      >
+                                        <i class="fi-rs-trash"></i>
+                                      </button>
+                                    </td>
+                                          
+                                      </tr>
+                                      <% }) %>  
+                                    </tbody>
+                                     
+                                      
+                                  </table>
+                              </div>
+
+                           
+                              <div style="float:right; margin-right:5px; margin-top:0px;">
+                                <strong id="cart-total" style="font-weight: bold; color: black; font-size: 24px;">Total: Rs.<%=locals.cartTotal%></strong>
+                                
+                              
+                              <div style="text-align: right;margin-bottom: 5px;">
+                                <a href="/place-order" class="btn"> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                              </div>
+                              
+                            </div>
+                           
+                            
+                              
+                              
+              
+            
+
+                                
+                                
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                                  
+                          <h1>Your cart is empty</h1>
+                          <div style="text-align: right;margin-bottom: 5px;">
+                            <a href="/shop" class="btn"> <i class="fi-rs-box-alt mr-10"></i> Continue Shopping</a>
+                          </div>
+                      <% } %>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+</main>
+
+<!-- Preloader Start -->
+<!--<div id="preloader-active">
+<div class="preloader d-flex align-items-center justify-content-center">
+<div class="preloader-inner position-relative">
+<div class="text-center">
+    <h5 class="mb-5">Now Loading</h5>
+    <div class="loader">
+        <div class="bar bar1"></div>
+        <div class="bar bar2"></div>
+        <div class="bar bar3"></div>
+    </div>
+</div>
+</div>
+</div>
+</div>!>
+ <! Vendor JS-->
+ <!-- <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+ <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+ <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+ <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+ <script src="assets/js/plugins/slick.js"></script>
+ <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+ <script src="assets/js/plugins/wow.js"></script>
+ <script src="assets/js/plugins/jquery-ui.js"></script>
+ <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+ <script src="assets/js/plugins/magnific-popup.js"></script>
+ <script src="assets/js/plugins/select2.min.js"></script>
+ <script src="assets/js/plugins/waypoints.js"></script>
+ <script src="assets/js/plugins/counterup.js"></script>
+ <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+ <script src="assets/js/plugins/images-loaded.js"></script>
+ <script src="assets/js/plugins/isotope.js"></script>
+ <script src="assets/js/plugins/scrollup.js"></script>
+ <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+ < Template  JS -->
+ <!-- <script src="assets/js/main.js"></script>
+ 
+</body>  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- count is the total number of products in cart and quantity is what we can change in cart page, so total quantity  -->
+<!-- is the sum of count and quantity -->
+<script>
+
+
+function removeItem(prodId) {
+   
+    console.log(prodId);
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      console.log(result,"ok");
+      if (result) {
+        $.ajax({
+          url: '/delete-cart-product/'+prodId,
+         
+          method: 'get',
+          success: (response) => {
+            if (response) {
+              
+              location.reload();
+            }
+          },
+        });
+        
+      }
+    });
+  }
+
+
+
+
+
+
+function updateTotal() {
+  const allSubtotals = document.querySelectorAll(".product-subtotal");
+  console.log(allSubtotals)
+  let newTotal = 0;
+  allSubtotals.forEach((sub) => {
+    const subTotal = Number(sub.innerHTML);
+    if (!isNaN(subTotal)) {
+      newTotal += subTotal;
+     console.log(newTotal,"neww")
+    }
+    
+  });
+  document.getElementById("cart-total").innerHTML = "Total: Rs." + newTotal.toFixed(2);
+}
+
+
+
+function cartQuantity(cartId, prodId, Price, count) {
+  console.log(cartId, prodId, Price, count + "uuuuuuu");
+  let quantity = parseInt(document.getElementById("qty" + prodId).innerHTML);
+  console.log(quantity);
+  const totalQuantity = count + quantity;
+
+  const subTotal = totalQuantity * Price;
+  const total = subTotal*count*quantity
+  console.log(totalQuantity);
+  if (totalQuantity != 0) {
+    document.getElementById(prodId + "-subtotal").innerHTML = subTotal;
+
+    console.log("aaaaaaaaajjjjjjjjjjjaaaxxxx");
+    updateTotal();
+
+    $.ajax({
+      url: "/change-product-quantity",
+      data: {
+        cart: cartId,
+        product: prodId,
+        count: count,
+        quantity: quantity,
+        price: Price,
+      },
+      method: "POST",
+      success: function (removeResponse) {
+        if(removeResponse.stock==='full'){
+          Swal.fire({
+           title: "Out of Stock",
+           text: "This product is currently out of stock.",
+           icon: "warning",
+           confirmButtonColor: "#3085d6",
+           confirmButtonText: "OK",
+            onAfterClose: function () {
+        window.location.reload();
+      }
+         });
+            console.log('out of stock');
+            
+
+        }
+        else{
+          if (removeResponse.removeProduct) {
+          location.reload();
+        } else {
+          console.log(quantity + count);
+          document.getElementById("qty" + prodId).innerText = quantity + count;
+        }
+        }
+
+        
+      },
+    });
+  }
+}
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- <script>
+
+
+    function cartQuantity(cartId,prodId,Price,count){
+      console.log(cartId,prodId,Price,count+'uuuuuuu');
+      let quantity = parseInt(document.getElementById(prodId).innerHTML)
+    console.log(quantity);
+    count = parseInt(count)
+      
+  
+      $.ajax({
+        url:'/change-product-quantity', 
+        data:{
+          cart:cartId,
+          product:prodId,
+          count:count,
+           quantity:quantity,
+          price:Price
+        },
+        method:'post',
+        success:(response)=>{
+            alert(response)
+            if (response.removeProduct) {
+          alert("Product Removed From the Cart")
+          location.reload()
+        }
+  
+        else {
+        //   document.getElementById(prod ).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
+          document.getElementById(prodId).innerHTML = response.subtotal
+        }
+        }
+   
+    })
+  }
+
+
+  </script> -->
+
+
+
+
+
+
+
+
+

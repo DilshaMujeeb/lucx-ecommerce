@@ -1,0 +1,56 @@
+<body>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order List </h2>
+                <p></p>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Date</th>
+                                <th scope="col" class="text-end"> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let i = 0; i < response.length; i++) { %>
+                                <tr>
+                                  <td><%= response[i]._id %></td>
+                                  <td><b><%= response[i].name %></b></td>
+                                  <td><%= response[i].phone %></td>
+                                  <td>₹<%= response[i].total %> for <%= response[i].products.length %> item(s)</td>
+                                  <td><span class="badge rounded-pill alert-warning"><%= response[i].status %></span></td>
+                                  <td><%= response[i].date.toDateString() %></td>
+                                  <td class="text-end">
+                                    <a href="/admin/view-order-products/<%= response[i]._id %>"
+                                       class="btn btn-md rounded font-sm">Detail</a>
+                                    <div class="dropdown">
+                                      <a href="#" data-bs-toggle="dropdown"
+                                         class="btn btn-light rounded btn-sm font-sm"><i class="material-icons md-more_horiz"></i></a>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View detail</a>
+                                        <a class="dropdown-item" href="#">Edit info</a>
+                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% } %>
+
+                        </tbody>
+                    </table>
+                </div> <!-- table-responsive //end -->
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+    </section> <!-- content-main end// -->
+   </body>
