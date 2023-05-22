@@ -78,3 +78,16 @@
     </div>
   </div>
 </body>
+<script>
+  // Highlight the active link
+  const navLinks = document.querySelectorAll('.nav-link');
+  const currentUrl = window.location.href;
+
+  navLinks.forEach((link) => {
+    if (link.href === currentUrl) {
+      link.parentNode.classList.add('active');
+    } else {
+      link.parentNode.classList.remove('active');
+    }
+  });
+</script>

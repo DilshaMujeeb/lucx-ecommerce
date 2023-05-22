@@ -1,18 +1,41 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-3">
-      <div class="card">
-        
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="/user-dash" class="nav-link active">Dashboard</a></li>
-          <li class="list-group-item"><a href="/order-page1" class="nav-link">Orders</a></li>
-          <li class="list-group-item"><a href="/wallet" class="nav-link">Wallet</a></li>
-          <li class="list-group-item"><a href="/address"  class="nav-link">My Address</a></li>
-          <li class="list-group-item"><a href="/account-details" class="nav-link">Account details</a></li>
-          <li class="list-group-item"><a href="/logout" class="nav-link">Logout</a></li>
-        </ul>
-      </div>
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <a href="/user-dash" class="nav-link active">
+            <span class="field-name">Dashboard</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/order-page1" class="nav-link">
+            <span class="field-name">Orders</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/wallet" class="nav-link">
+            <span class="field-name">Wallet</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/address" class="nav-link">
+            <span class="field-name">My Address</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/account-details" class="nav-link">
+            <span class="field-name">Account details</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/logout" class="nav-link">
+            <span class="field-name">Logout</span>
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
     <div class="col-md-9">
       <div class="row">
         <div class="col-md-6">
@@ -58,3 +81,16 @@
     </div>
   </div>
 </div>
+<script>
+  // Highlight the active link
+  const navLinks = document.querySelectorAll('.nav-link');
+  const currentUrl = window.location.href;
+
+  navLinks.forEach((link) => {
+    if (link.href === currentUrl) {
+      link.parentNode.classList.add('active');
+    } else {
+      link.parentNode.classList.remove('active');
+    }
+  });
+</script>

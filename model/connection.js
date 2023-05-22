@@ -24,12 +24,11 @@ const userschema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-
   access: {
     type: Boolean,
     default: false,
   },
-  CreatedAt: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
@@ -43,7 +42,24 @@ const userschema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  usedCoupons: [
+    {
+      couponCode: {
+        type: String,
+        required: true,
+      },
+      orderId: {
+        
+      },
+      appliedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
+
+
 const productSchema = new mongoose.Schema({
   Productname: {
     type: String,

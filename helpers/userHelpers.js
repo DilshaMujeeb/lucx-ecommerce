@@ -1034,16 +1034,27 @@ module.exports = {
     }
   },
 
-  couponMatch: (couponCode) => {
+  couponMatch: (couponCode,user) => {
     try {
       console.log("inside coupon,atch");
       return new Promise(async (resolve, reject) => {
         const couponExist = await db.coupon.findOne({ code: couponCode });
-        if (couponExist) {
-          resolve(couponExist);
+        const userExist = await db.user.find({ _id: user })
+        if (couponExist&&userExist) {
+          const couponAlreadyExist = await db.user.findOne({
+            "usedCoupons.couponCode": couponCode,
+          });
+
+          if (couponAlreadyExist) {
+            reject(new Error("Coupon already used by the user"));
+          } else {
+            resolve(couponExist);
+          }
         } else {
-          reject(new Error("Invalid coupon"));
+          reject(new Error("Invalid coupon or user"));
         }
+          
+        
       });
     } catch (error) {
       console.log(error);
@@ -1056,6 +1067,18 @@ module.exports = {
         await db.order.updateOne({});
       } catch (error) {}
     });
+  },
+  usedCoupons: (userid,couponCode, currentDate) => {
+    return new Promise(async (resolve, reject) => {
+      await db.user.findOneAndUpdate(
+        { _id: userid },
+        {
+          $push: {
+            usedCoupons: { couponCode: couponCode, appliedAt: currentDate },
+          },
+        }
+      );
+    })
   },
 
   updateField: (proId, discountedPrice) => {

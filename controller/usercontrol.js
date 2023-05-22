@@ -41,10 +41,11 @@ module.exports = {
       res.render("user/login");
     }
     console.log("User Logged In!");
-    console.log(req.session.userIn);
+    console.log(req.session.user);
   },
 
   postLogin: (req, res) => {
+    console.log(req.body,"reeeeeeeeeeeeeee");
     userhelpers.dologin(req.body).then((response) => {
       const [user, status, errorMessage] = response;
 
@@ -360,6 +361,7 @@ module.exports = {
       res.render("user/user-dashpro", {
         loginheader: true,
         isUserProfile: true,
+        activeLink: "user-dash",
       });
     }
   },
@@ -371,7 +373,7 @@ module.exports = {
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
       const { order, orders, hashedId } = response;
-      res.render("user/order-page", {
+      res.render("user/order-pageProfile", {
         loginheader: true,
         order,
         orders,
@@ -380,7 +382,7 @@ module.exports = {
     });
   },
   userProfileDash: (req, res) => {
-    res.render("user/user-dashpro");
+    res.render("user/user-dashpro1");
   },
 
   walletDetails: (req, res) => {
@@ -784,35 +786,41 @@ module.exports = {
     try {
       const couponCode = req.body.code;
       const total = req.body.total;
-      const user = req.body.user;
+      const user = req.session.user._id;
       console.log(user, "uuuuuuuuuuusssssser");
+      
+      
       // const coupon = await userHelper.getCouponByCode(couponCode);
       console.log("inside apply coupon", total);
 
       console.log("inside apply coupon", couponCode);
-      const coupon = await userhelpers.couponMatch(couponCode);
+      const coupon = await userhelpers.couponMatch(couponCode,user);
       console.log(coupon, "ccccoupioj");
+
+      const currentDate = new Date();
       if (
         coupon &&
         coupon.isActive &&
         total >= coupon.minimumAmount &&
-        total <= coupon.maximumDiscount
+        total <= coupon.maximumDiscount &&
+        currentDate >= coupon.startDate &&
+        currentDate <= coupon.endDate
       ) {
         const discount = coupon.discountAmount;
-        // coupon.discountType === "percentage"
-        // ? (total * coupon.discountAmount) / 100
-        // : coupon.discountAmount;
-        const newTotal = total - discount;
-        // userhelpers.newTotal(user,newTotal)
-        req.session.newTotal = newTotal; // store the newTotal in the session
 
+        const newTotal = total - discount;
+       
+        userhelpers.usedCoupons(user, couponCode, currentDate);
+
+        req.session.newTotal = newTotal; // store the newTotal in the session
+         
         res.json({ success: true, newTotal, discount });
       } else {
         res.json({ success: false, message: "Invalid coupon code" });
       }
     } catch (error) {
       console.log(error);
-      res.json({ success: false, message: "Error applying coupon" });
+      res.json({ success: false, message: "Coupon already used" });
     }
   },
 };

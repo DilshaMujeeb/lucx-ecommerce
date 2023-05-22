@@ -47,6 +47,7 @@
   </div>
 </div>
 
+
 <script>
   // Highlight the active link
   const navLinks = document.querySelectorAll('.nav-link');
@@ -54,9 +55,9 @@
 
   navLinks.forEach((link) => {
     if (link.href === currentUrl) {
-      link.classList.add('active');
+      link.parentNode.classList.add('active');
     } else {
-      link.classList.remove('active');
+      link.parentNode.classList.remove('active');
     }
   });
 </script>
