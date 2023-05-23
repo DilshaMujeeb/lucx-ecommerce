@@ -13,19 +13,28 @@ const { response } = require("../app");
 var loginheader, loginStatus;
 
 module.exports = {
-  getHome: (req, res) => {
+  getHome: async (req, res) => {
+    let cat = [];
     if (req.session.user) {
       let user = req.session.user._id;
       let username = req.session.user.username;
+      
       console.log(user, "loggedin user");
-
+      cat = await adminhelpers.findAllcategories();
       userhelpers.getCartCount(user).then((proCount) => {
+
         console.log("cartcount", proCount);
 
-        res.render("user/userhome", { loginheader: true, proCount, username });
+        res.render("user/userhome", {
+          loginheader: true,
+          proCount,
+          username,
+          cat: cat,
+        });
       });
     } else {
-      res.render("user/userhome");
+       cat = await adminhelpers.findAllcategories();
+      res.render("user/userhome", { loginheader: false, cat: cat });
     }
   },
   showLogin: (req, res) => {
@@ -104,7 +113,7 @@ module.exports = {
         }
         res.render("user/shop", {
           products,
-          cat,
+          cat: cat,
           loginheader: true,
           username: req.session.user.username,
           proCount,
@@ -142,7 +151,7 @@ module.exports = {
         }
         res.render("user/shop", {
           products,
-          cat,
+          cat: cat,
           loginheader: false,
           currentPage: page,
           totalPages: products.totalPages, // Set the total pages based on the actual total count of filtered products
@@ -161,7 +170,10 @@ module.exports = {
     cat = await adminhelpers.findAllcategories();
     const products=await userhelpers.categoryMatch(req.params.id)
       console.log(products,"cat");
-      res.render("user/cat-shop",{products,cat});
+      res.render("user/cat-shop", {
+        products,
+        cat,partials: { userHeader: "userHeader" },
+      });
 
  },
 
@@ -268,25 +280,30 @@ module.exports = {
       });
     });
   },
-  userCart: (req, res) => {
+  userCart:async (req, res) => {
     let user, username;
+    let cat=[]
     if (req.session.user) {
       user = req.session.user._id;
       username = req.session.user.username;
       console.log("user session details :", user);
     }
-
+   
     userhelpers.getCartProducts(user).then(async (response) => {
       console.log("aggregation response : ", response);
       // console.log(response[0].proDetails, "prrrrrrrrrrrrrrrroooo");
       console.log("you caaaan doi it");
+      cat = await adminhelpers.findAllcategories();
+      console.log(cat,"caaaaaaaaaaaaaaaaaaaaaaatttttttt");
       let cartTotal = await userhelpers.getTotalAmount(user);
       await userhelpers.getCartCount(user, req.params.id).then((proCount) => {
+        
         if (proCount) {
           res.render("user/cart", {
             productExist: true,
             response,
             proCount,
+            cat: cat,
             cartTotal,
             loginheader: true,
             username,
@@ -297,6 +314,7 @@ module.exports = {
             productExist: false,
             loginheader: true,
             username,
+            cat
           });
         }
       });

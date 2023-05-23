@@ -129,8 +129,115 @@
                       <% } %>
                     </div>
 
+
+                      <div class="mobile-header-active mobile-header-wrapper-style">
+    <div class="mobile-header-wrapper-inner">
+      <div class="mobile-header-top">
+        <div class="mobile-header-lo" style="height: 50px; width: 50px;">
+          <a href="index.html"><img style="height: 50px; width: 50px;" src="assets/imgs/theme/logo.png"
+              alt="logo"
+              /></a>
+        </div>
+        <div
+          class="mobile-menu-close close-style-wrap
+          close-style-position-inherit">
+          <button class="close-style search-close">
+            <i class="icon-top"></i>
+            <i class="icon-bottom"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-header-content-area">
+        <div class="mobile-search search-style-3 mobile-header-border">
+                                       <form action="/shop" method="GET" class="search-form mb-30">
+                        <input type="text" name="search" placeholder="Search products..." value="<%=locals.searchQuery %>">
+                        <button type="submit" class="search-btn"><i class="fi-rs-search"></i></button>
+                    </form>
+        </div>
+        <div class="mobile-menu-wrap mobile-header-border">
+          <div class="main-categori-wrap mobile-header-border">
+            <a class="categori-button-active-2" href="#">
+              <span class="fi-rs-apps"></span> Browse Categories
+            </a>
+            <div class="categori-dropdown-wrap categori-dropdown-active-small">
+              <ul class="categories">
+                            <% cat.forEach(function(cat, index) { %>
+                                <li>
+                                    <a href="/category/<%= cat._id %>"><%= cat.CategoryName %></a>
+                                </li>
+                            <% }) %>
+                        </ul>
+            </div>
+          </div> 
+          <!-- mobile menu start -->
+          <nav>
+            <ul class="mobile-menu">
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="/">Home</a>
+              </li>
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="/shop">Shop</a>
+              </li>
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="/cart">Cart</a>
+              </li>
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="/order-page">Orders</a>
+              </li>
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="#">Contact</a>
+              </li>
+
+
+
+              <li class="menu-item-has-children">
+                <span class="menu-expand"></span><a href="#">Language</a>
+                <ul class="dropdown">
+                  <li><a href="#">English</a></li>
+                  <li><a href="#">French</a></li>
+                  <li><a href="#">German</a></li>
+                  <li><a href="#">Spanish</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- mobile menu end -->
+        </div>
+        <div class="mobile-header-info-wrap mobile-header-border">
+          <div class="single-mobile-header-info mt-30">
+            <a href="#"> Our location </a>
+          </div>
+          <div class="single-mobile-header-info">
+            <a href="page-login-register.html">Log In / Sign Up </a>
+          </div>
+          <div class="single-mobile-header-info">
+            <a href="#">(+01) - 2345 - 6789 </a>
+          </div>
+        </div>
+        <div class="mobile-social-icon">
+          <h5 class="mb-15 text-grey-4">Follow Us</h5>
+          <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg"
+              alt=""
+              /></a>
+          <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""
+              /></a>
+          <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg"
+              alt=""
+              /></a>
+          <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg"
+              alt=""
+              /></a>
+          <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""
+              /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
                     
                 </div>
+
+      
             </div>
         </div>
     </div>
