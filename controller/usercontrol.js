@@ -2,8 +2,6 @@ const adminhelpers = require("../helpers/adminHelpers");
 const userhelpers = require("../helpers/userHelpers");
 const { category, order } = require("../model/connection");
 
-
-
 // const { validationResult } = require('express-validator');
 
 const authentication = require("../middleware/middlewares");
@@ -18,23 +16,27 @@ module.exports = {
     if (req.session.user) {
       let user = req.session.user._id;
       let username = req.session.user.username;
-      
+
       console.log(user, "loggedin user");
       cat = await adminhelpers.findAllcategories();
       userhelpers.getCartCount(user).then((proCount) => {
-
         console.log("cartcount", proCount);
 
         res.render("user/userhome", {
           loginheader: true,
+          header:true,
           proCount,
           username,
           cat: cat,
         });
       });
     } else {
-       cat = await adminhelpers.findAllcategories();
-      res.render("user/userhome", { loginheader: false, cat: cat });
+      cat = await adminhelpers.findAllcategories();
+      res.render("user/userhome", {
+        loginheader: false,
+        header: true,
+        cat: cat,
+      });
     }
   },
   showLogin: (req, res) => {
@@ -43,6 +45,7 @@ module.exports = {
       let username = req.session.user.username;
       res.render("user/userhome", {
         loginheader: true,
+        header: true,
         loginStatus: true,
         username,
       });
@@ -54,7 +57,7 @@ module.exports = {
   },
 
   postLogin: (req, res) => {
-    console.log(req.body,"reeeeeeeeeeeeeee");
+    console.log(req.body, "reeeeeeeeeeeeeee");
     userhelpers.dologin(req.body).then((response) => {
       const [user, status, errorMessage] = response;
 
@@ -64,8 +67,8 @@ module.exports = {
         const blockedStatus = false;
         const loginStatus = req.session.userIn;
         let username = req.session.user.username;
+        let header = true;
         res.redirect("/");
-        // res.render("user/userhome", { username });
       } else {
         const blockedStatus = errorMessage === "Your account has been blocked";
         const loginStatus = req.session.userIn;
@@ -78,12 +81,12 @@ module.exports = {
   shopView: async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1;
-      const searchQuery = req.query.search||'';
+      const searchQuery = req.query.search || "";
       const sortCriteria = req.query.sort;
       const filters = req.query.filters;
       let products = [];
       let cat = [];
-  
+
       if (req.session.userIn) {
         const user = req.session.user?._id;
         const proCount = await userhelpers.getCartCount(user);
@@ -115,6 +118,7 @@ module.exports = {
           products,
           cat: cat,
           loginheader: true,
+          header: true,
           username: req.session.user.username,
           proCount,
           currentPage: page,
@@ -130,7 +134,7 @@ module.exports = {
           sortCriteria,
           filters
         );
-        console.log("products",products);
+        console.log("products", products);
         cat = await adminhelpers.findAllcategories();
         for (let i = 0; i < products.length; i++) {
           let product = products[i];
@@ -153,6 +157,7 @@ module.exports = {
           products,
           cat: cat,
           loginheader: false,
+          header: true,
           currentPage: page,
           totalPages: products.totalPages, // Set the total pages based on the actual total count of filtered products
           searchQuery,
@@ -167,22 +172,40 @@ module.exports = {
   },
 
   category: async (req, res) => {
-    cat = await adminhelpers.findAllcategories();
-    const products=await userhelpers.categoryMatch(req.params.id)
-      console.log(products,"cat");
-      res.render("user/cat-shop", {
-        products,
-        cat,partials: { userHeader: "userHeader" },
-      });
-
- },
+    let username
+    if (req.session.user) {
+      username = req.session.user.username
+       let cat = [];
+       cat = await adminhelpers.findAllcategories();
+       const products = await userhelpers.categoryMatch(req.params.id);
+       console.log(products, "cat");
+       res.render("user/cat-shop", {
+         products,
+         cat,
+         header: true,
+         loginheader:true,username
+       });
+    }
+    else {
+       let cat = [];
+       cat = await adminhelpers.findAllcategories();
+       const products = await userhelpers.categoryMatch(req.params.id);
+       console.log(products, "cat");
+       res.render("user/cat-shop", {
+         products,
+         cat,
+         header: true,
+         loginheader: false
+       });
+    }
+   
+  },
 
   //list and unslist
   getProductList: (req, res) => {
     userhelpers
       .productList()
       .then((product) => {
-        
         // filter out unlisted products
         const filteredProductList = productList.filter(
           (product) => !product.unlist
@@ -211,8 +234,7 @@ module.exports = {
   },
 
   userlogout: (req, res) => {
-    loginheader = false;
-    loginStatus = false;
+    (loginheader = false), (header = true), (loginStatus = false);
     req.session.user.username = false;
     req.session.userIn = false;
     req.session.user = false;
@@ -234,10 +256,12 @@ module.exports = {
       }
     });
   },
-  zoomshopView: (req, res) => {
+  zoomshopView:async (req, res) => {
+    let cat=[]
     if (req.session.user) {
       let user = req.session.user._id;
       let username = req.session.user.username;
+       cat = await adminhelpers.findAllcategories()
       userhelpers.getCartCount(user).then((proCount) => {
         userhelpers.zoomlistProductShop(req.params.id).then((response) => {
           console.log(response, "zooooooom");
@@ -245,14 +269,23 @@ module.exports = {
             response,
             proCount,
             loginheader: true,
+            header: true,
             username,
+            cat
           });
         });
       });
     } else {
+      let cat = [];
+      cat = await adminhelpers.findAllcategories();
       userhelpers.zoomlistProductShop(req.params.id).then((response) => {
         console.log(response, "zooooooom");
-        res.render("user/imagezoom", { response, loginheader: false });
+        res.render("user/imagezoom", {
+          response,
+          loginheader: false,
+          header: true,
+          cat
+        });
       });
     }
   },
@@ -280,24 +313,23 @@ module.exports = {
       });
     });
   },
-  userCart:async (req, res) => {
+  userCart: async (req, res) => {
     let user, username;
-    let cat=[]
+    let cat = [];
     if (req.session.user) {
       user = req.session.user._id;
       username = req.session.user.username;
       console.log("user session details :", user);
     }
-   
+
     userhelpers.getCartProducts(user).then(async (response) => {
       console.log("aggregation response : ", response);
       // console.log(response[0].proDetails, "prrrrrrrrrrrrrrrroooo");
       console.log("you caaaan doi it");
       cat = await adminhelpers.findAllcategories();
-      console.log(cat,"caaaaaaaaaaaaaaaaaaaaaaatttttttt");
+      console.log(cat, "caaaaaaaaaaaaaaaaaaaaaaatttttttt");
       let cartTotal = await userhelpers.getTotalAmount(user);
       await userhelpers.getCartCount(user, req.params.id).then((proCount) => {
-        
         if (proCount) {
           res.render("user/cart", {
             productExist: true,
@@ -306,6 +338,7 @@ module.exports = {
             cat: cat,
             cartTotal,
             loginheader: true,
+            header: true,
             username,
           });
         } else {
@@ -313,8 +346,9 @@ module.exports = {
           res.render("user/cart", {
             productExist: false,
             loginheader: true,
+            header: true,
             username,
-            cat
+            cat,
           });
         }
       });
@@ -374,115 +408,159 @@ module.exports = {
   },
 
   //USER PROFILE MANAGEMENT
-  profilePage: (req, res) => {
+  profilePage: async (req, res) => {
+    let cat = [];
+    let username
     if (req.session.user) {
+      username = req.session.user.username
+      cat = await adminhelpers.findAllcategories();
+
       res.render("user/user-dashpro", {
         loginheader: true,
+        header: true,
+        cat,username,
         isUserProfile: true,
         activeLink: "user-dash",
       });
     }
   },
-  profileOrderPage: (req, res) => {
+  profileOrderPage: async (req, res) => {
     let userId;
+    let cat = [];
+    let username;
     if (req.session.user) {
       userId = req.session.user._id;
+        username = req.session.user.username;
     }
+    cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
       const { order, orders, hashedId } = response;
       res.render("user/order-pageProfile", {
         loginheader: true,
+        header: true,
         order,
+        cat,
         orders,
         hashedId,
+        username
       });
     });
   },
-  userProfileDash: (req, res) => {
-    res.render("user/user-dashpro1");
+  userProfileDash: async (req, res) => {
+    let cat = [];
+    let username;
+     if (req.session.user) {
+       username = req.session.user.username;
+     }
+    
+    cat = await adminhelpers.findAllcategories();
+    res.render("user/user-dashpro1", { cat, header: true,loginheader:true,username });
   },
 
-  walletDetails: (req, res) => {
+  walletDetails: async (req, res) => {
     try {
       let user;
+      let username;
+      let cat = [];
       if (req.session.user) {
         user = req.session.user._id;
+         
+         username = req.session.user.username;
+         
       }
+      cat = await adminhelpers.findAllcategories();
       userhelpers.balanceWallet(user).then((balance) => {
         // console.log(balance,"balamnce in waaaaaleettt");
         userhelpers.walletHistoty(user).then((history) => {
           console.log("historyy", history);
-          res.render("user/wallet", { balance, history });
+          res.render("user/wallet", { balance, history, cat, header: true ,loginheader:true,username});
         });
       });
     } catch (error) {
       console.log(error);
     }
   },
-  getProfileAddress: (req, res) => {
+  getProfileAddress:async (req, res) => {
     try {
+      let cat = [];
       let user = req.session.user._id;
+      let username;
+      if (req.session.user) {
+        user = req.session.user._id;
+
+        username = req.session.user.username;
+      }
+       cat = await adminhelpers.findAllcategories()
       userhelpers.getProfileAddress(user).then((address) => {
-        res.render("user/pro-address", { address, loginheader: true });
+        res.render("user/pro-address", {
+          address,
+          cat,
+          loginheader: true,
+          header: true,
+          username
+        });
       });
     } catch (error) {
       console.log(error);
     }
   },
-  goToAddaddressPage: (req, res) => {
+  goToAddaddressPage:async (req, res) => {
     try {
-      res.render("user/pro-add-address");
+      let cat = [];
+     let username
+      if (req.session.user) {
+        user = req.session.user._id;
+
+        username = req.session.user.username;
+      }
+        cat = await adminhelpers.findAllcategories();
+      res.render("user/pro-add-address",{header:true,cat,loginheader:true,username});
     } catch (error) {
       console.log(error);
     }
   },
 
-  // getProfileAddress: (req, res) => {
-  //   let user = req.session.user._id;
-  //   console.log(req.body,"baaaaaaaaaalaneeeeee");
-  //   userhelpers.getProfileAddress(user).then((address) => {
-  //     userhelpers.balanceWallet(user).then((balance) => {
-  //       userhelpers.getOrderpage(user).then((response) => {
-  //         userhelpers.getUserdetails(user).then((userDetails) => {
-  //           console.log("uuuuusssssssseeeeeeert",userDetails);
-  //           res.render("user/profile", {
-  //             address,
-  //             user,
-  //             userDetails,
-  //             response,
-  //             balance,
-  //             loginheader: true,
-  //           });
-  //         });
-  //       });
-  //     });
-  //   });
-  // },
-
-  postuserProfileAddress: (req, res) => {
-    // if(req.sesssion.user){
-    //   let user = req.session.user?.[0]._id
-    //   console.log(user,"userprofile");
-    // }
+  postuserProfileAddress: async(req, res) => {
+   
     try {
-      let user = req.session.user._id;
+      let user; 
+      let username
+       if (req.session.user) {
+         user = req.session.user._id;
+
+         username = req.session.user.username;
+       }
+      
       console.log(user, "userprofile");
       console.log(req.body, "requestbody");
       userhelpers.postProfileAddress(req.body, user).then((address) => {
         console.log(address, "Data");
-        res.redirect("/place-order");
+        res.redirect("/address");
       });
     } catch (error) {
       console.log(error);
     }
   },
-  getEditAddress: (req, res) => {
+  getEditAddress: async(req, res) => {
     console.log("lllllllllllllllllllllllll");
-    let user = req.session.user._id;
+    let user
+    let username;
+    let cat=[]
+    if (req.session.user) {
+      user = req.session.user._id;
 
+      username = req.session.user.username;
+    }
+     cat = await adminhelpers.findAllcategories()
     userhelpers.editUserAddress(req.params.id).then((address) => {
-      res.render("user/pro-address-edit", { loginheader: true, address });
+      res.render("user/pro-address-edit", {
+        loginheader: true,
+        username,
+        header: true,
+        address,
+        cat
+      });
     });
   },
   postEditaddress: (req, res) => {
@@ -491,26 +569,27 @@ module.exports = {
 
     userhelpers.postEdituseraddr(req.params.id, req.body, user).then(() => {
       res.redirect("/address");
-      //on redirect we are using url
     });
   },
   deleteAddress: (req, res) => {
     console.log("inside delete cart");
     let addressId = req.params.id;
     userhelpers.deleteUseraddress(addressId).then((response) => {
-      // res.redirect("/profile");
       res.json({ success: true });
     });
   },
-  accountDetailsPage: (req, res) => {
+  accountDetailsPage:async (req, res) => {
     try {
+      let cat = [];
       let user;
+      let username
       if (req.session.user) {
         user = req.session.user._id;
+        username= req.session.user.username
       }
-
+       cat = await adminhelpers.findAllcategories()
       userhelpers.getUserdetails(user).then((userDetails) => {
-        res.render("user/account-details", { userDetails });
+        res.render("user/account-details", { userDetails,header:true,loginheader:true ,username,cat});
       });
     } catch (error) {
       console.log(error);
@@ -580,6 +659,7 @@ module.exports = {
         usern,
         user,
         loginheader: true,
+        
       });
       // console.log("helloooo",products,total,count,address,user);
     });
@@ -663,45 +743,53 @@ module.exports = {
   },
 
   //here in order page we need to take the data grpm db to front page
-  getOrderlist: (req, res) => {
+  getOrderlist:async (req, res) => {
+    let cat=[]
     let userId;
     if (req.session.user) {
       userId = req.session.user._id;
     }
+     cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
       const { order, orders, hashedId } = response;
       res.render("user/order-page", {
         loginheader: true,
+        header: true,
         order,
         orders,
         hashedId,
+        cat
       });
     });
   },
 
-  viewOrders: (req, res) => {
+  viewOrders:async(req, res) => {
     console.log("haaaaaaaaaaaaiiiiiiii");
     let user, username;
+    let cat=[]
     if (req.session.user) {
       user = req.session.user._id;
       username = req.session.user.username;
     }
+     cat = await adminhelpers.findAllcategories()
     userhelpers.getViewproducts(req.params.id).then(async (response) => {
       console.log("response in ordervoiew", response);
 
       const { orderDetail, orderDetails, hashedId } = response;
 
       userhelpers.getAddress(req.params.id).then(async (response) => {
-        // console.log(response[0].products[0],"pppppppp");
+        
         console.log("orderaddress", response[0].ordAddrs);
         res.render("user/view-order", {
           response,
           loginheader: true,
+          header: true,
           username,
           orderDetail,
           orderDetails,
           hashedId,
+          cat
         });
         console.log("response in orderpage........", response);
       });
@@ -806,13 +894,12 @@ module.exports = {
       const total = req.body.total;
       const user = req.session.user._id;
       console.log(user, "uuuuuuuuuuusssssser");
-      
-      
+
       // const coupon = await userHelper.getCouponByCode(couponCode);
       console.log("inside apply coupon", total);
 
       console.log("inside apply coupon", couponCode);
-      const coupon = await userhelpers.couponMatch(couponCode,user);
+      const coupon = await userhelpers.couponMatch(couponCode, user);
       console.log(coupon, "ccccoupioj");
 
       const currentDate = new Date();
@@ -827,11 +914,11 @@ module.exports = {
         const discount = coupon.discountAmount;
 
         const newTotal = total - discount;
-       
+
         userhelpers.usedCoupons(user, couponCode, currentDate);
 
         req.session.newTotal = newTotal; // store the newTotal in the session
-         
+
         res.json({ success: true, newTotal, discount });
       } else {
         res.json({ success: false, message: "Invalid coupon code" });

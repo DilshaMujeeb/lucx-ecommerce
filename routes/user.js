@@ -31,11 +31,7 @@ router.get('/zoomView/:id',controller.zoomshopView)
 
 router.get('/cart',authentication.userAuth, controller.userCart)
 
-//first create a collection in the database for cart the create the page..
-// and creating document based on the id of the id of the user
-//for viewing the items in the add to cart
-//cart has an id and oser has an id.. and the is given as an array
-// router.get('/add-to-cart/:id',authentication.userAuth, controller.addToCart)
+
 router.get('/add-to-cart/:id',authentication.userAuth,controller.addTocart)
 router.post('/change-product-quantity',authentication.userAuth,controller.changeQuantity)
 
@@ -51,8 +47,6 @@ router.get( "/add-addresspro",authentication.userAuth,controller.goToAddaddressP
 router.post( "/submit-address", authentication.userAuth,controller.postuserProfileAddress);
 
 
-// router.get('/')
-// router.get('/profile1',authentication.userAuth,controller.getProfileAddress)
 
 router.get("/account-details",authentication.userAuth,controller.accountDetailsPage);
 
@@ -65,7 +59,9 @@ router.post('/edit-address/:id',authentication.userAuth, controller.postEditaddr
 router.get('/delete-address/:id',authentication.userAuth,controller.deleteAddress)
 //place order
 router.get('/place-order', authentication.userAuth, controller.placeOrder)
-router.get("/placeorder-address",authentication.userAuth,controller.addAddress);
+router.get("/placeorder-address", authentication.userAuth, controller.addAddress);
+
+
 router.post("/placesubmit-address",authentication.userAuth,controller.placeAddress);
 
 router.post('/place-order', authentication.userAuth, controller.postPlaceorder)
