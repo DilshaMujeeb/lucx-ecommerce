@@ -68,7 +68,7 @@ module.exports = {
           },
         ]);
         console.log("revenue:::");
-        resolve(revenue[0].totalRevenue);
+        resolve(revenue[0]?.totalRevenue);
       } catch (error) {
         console.log(error);
       }
