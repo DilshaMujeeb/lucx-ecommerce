@@ -1,21 +1,11 @@
 <section class="mx-auto">
-    <main class="main">
-      <div class="page-header breadcrumb-wrap">
-        <div class="container">
-          <div class="breadcrumb">
-            <a href="/" rel="nofollow">Home</a>
-            <span></span> Pages <span></span> Signup / Register
-          </div>
-        </div>
-      </div>
+  <main class="main">
     <div class="container">
       <div class="row my-5">
         <div class="col-lg-10 m-auto">
           <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
-              <div
-                class="login_wrap widget-taber-content p-30 background-white border-radius-5"
-              >
+              <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
                 <div class="padding_eight_all bg-white">
                   <div class="heading_s1">
                     <h3 class="mb-30">Create an Account</h3>
@@ -25,58 +15,53 @@
                     throughout this website, to manage access to your account, and
                     for other purposes described in our privacy policy
                   </p>
-                  <%if (emailStatus==false){%>
-                    <p style="color: red;">EmailId already exist </p>
-                    <%}
-  
-                     
-                
-                    %>
-                    
-                  <form  action="/signup" method="post">
+
+                  <% if (emailStatus == false) { %>
+                    <p style="color: red;">EmailId already exists</p>
+                  <% } %>
+
+                  <form id="signupForm" action="/signup" method="post">
                     <div class="form-group">
-                    
                       <input
                         type="text"
                         required=""
                         name="username"
+                        id="usernameInput"
                         placeholder="Username"
                       />
-                      
-                        
                     </div>
                     <div class="form-group">
                       <input
-                        type="text"
+                        type="email"
                         required=""
                         name="email"
+                        id="emailInput"
                         placeholder="Email"
                       />
+                      <p id="emailError" class="error-msg"></p>
                     </div>
                     <div class="form-group">
                       <input
                         type="text"
                         required=""
                         name="phonenumber"
+                        id="phoneInput"
                         placeholder="Phone Number"
                       />
+                      <p id="phoneError" class="error-msg"></p>
                     </div>
                     <div class="form-group">
                       <input
                         required=""
                         type="password"
                         name="password"
+                        id="passwordInput"
                         placeholder="Password"
+                        oninput="checkPasswordStrength()"
                       />
+                      <p id="passwordError" class="error-msg"></p>
                     </div>
-                    <!-- <div class="form-group">
-                      <input
-                        required=""
-                        type="password"
-                        name="password"
-                        placeholder="Confirm password"
-                      />
-                    </div> -->
+                    <div class="password-strength" id="passwordStrength"></div>
                     <div class="login_footer form-group">
                       <div class="chek-form">
                         <div class="custome-checkbox">
@@ -84,19 +69,19 @@
                             class="form-check-input"
                             type="checkbox"
                             name="checkbox"
-                            id="exampleCheckbox12"
+                            id="checkboxInput"
                             value=""
+                            required=""
                           />
-                          <label class="form-check-label" for="exampleCheckbox12"
-                            ><span>I agree to terms &amp; Policy.</span></label
-                          >
+                          <label class="form-check-label" for="checkboxInput">
+                            <span>I agree to terms &amp; Policy.</span>
+                          </label>
+                          <p id="checkboxError" class="error-msg"></p>
                         </div>
                       </div>
-                      <a href="page-privacy-policy.html"
-                        ><i class="fi-rs-book-alt mr-5 text-muted"></i>Lean
-                        more</a
-                      >
-                        
+                      <a href="page-privacy-policy.html">
+                        <i class="fi-rs-book-alt mr-5 text-muted"></i>Learn more
+                      </a>
                     </div>
                     <div class="form-group d-flex justify-content-center">
                       <button
@@ -109,24 +94,10 @@
                     </div>
                   </form>
                   <div class="divider-text-center mt-15 mb-15">
-                    <span> or</span>
+                    <span>or</span>
                   </div>
-                  <!-- <ul class="btn-login list_none text-center mb-15">
-                    <li>
-                      <a
-                        href="#"
-                        class="btn btn-facebook hover-up mb-lg-0 mb-sm-4"
-                        >Login With Facebook</a
-                      >
-                    </li>
-                    <li>
-                      <a href="#" class="btn btn-google hover-up"
-                        >Login With Google</a
-                      >
-                    </li>
-                  </ul> -->
                   <div class="text-muted text-center">
-                    Already have an account ? <a href="/login"> Sign in now</a >
+                    Already have an account? <a href="/login">Sign in now</a>
                   </div>
                 </div>
               </div>
@@ -135,6 +106,108 @@
         </div>
       </div>
     </div>
-  </section>
   </main>
-  
+</section>
+
+<script>
+  function checkPasswordStrength() {
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const password = passwordInput.value;
+
+    // Reset password strength indicator
+    passwordStrength.innerHTML = '';
+
+    // Validate password length
+    if (password.length < 8) {
+      passwordStrength.textContent = 'Password should be at least 8 characters long.';
+      passwordStrength.style.color = 'red';
+      return;
+    }
+
+    // Validate password complexity (at least one uppercase, lowercase, digit, and special character)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    if (!regex.test(password)) {
+      passwordStrength.textContent = 'Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special character.';
+      passwordStrength.style.color = 'red';
+      return;
+    }
+
+    // Password strength is strong
+    passwordStrength.textContent = 'Strong password.';
+    passwordStrength.style.color = 'green';
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', function(event) {
+    const usernameInput = document.getElementById('usernameInput');
+    const emailInput = document.getElementById('emailInput');
+    const phoneInput = document.getElementById('phoneInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const checkboxInput = document.getElementById('checkboxInput');
+
+    let isValid = true;
+
+    // Reset validation errors
+    usernameInput.classList.remove('is-invalid');
+    emailInput.classList.remove('is-invalid');
+    phoneInput.classList.remove('is-invalid');
+    passwordInput.classList.remove('is-invalid');
+    checkboxInput.classList.remove('is-invalid');
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('phoneError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+    document.getElementById('checkboxError').textContent = '';
+
+    // Validate username
+    if (usernameInput.value.trim() === '') {
+      isValid = false;
+      usernameInput.classList.add('is-invalid');
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailInput.value.trim() === '' || !emailRegex.test(emailInput.value.trim())) {
+      isValid = false;
+      emailInput.classList.add('is-invalid');
+      document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+    }
+
+    // Validate phone number
+    const phoneRegex = /^\d{10}$/;
+    if (phoneInput.value.trim() === '' || !phoneRegex.test(phoneInput.value.trim())) {
+      isValid = false;
+      phoneInput.classList.add('is-invalid');
+      document.getElementById('phoneError').textContent = 'Please enter a valid phone number.';
+    }
+
+    // Validate password
+    if (passwordInput.value.trim() === '') {
+      isValid = false;
+      passwordInput.classList.add('is-invalid');
+      document.getElementById('passwordError').textContent = 'Please enter a password.';
+    }
+
+    // Validate checkbox
+    if (!checkboxInput.checked) {
+      isValid = false;
+      checkboxInput.classList.add('is-invalid');
+      document.getElementById('checkboxError').textContent = 'Please agree to the terms and policy.';
+    }
+
+    if (!isValid) {
+      event.preventDefault(); // Prevent form submission if validation fails
+    }
+  });
+</script>
+
+<style>
+  .is-invalid {
+    border-color: red;
+    color: red;
+  }
+
+  .error-msg {
+    color: red;
+    margin-top: 5px;
+  }
+</style>

@@ -436,6 +436,7 @@ module.exports = {
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
       const { order, orders, hashedId } = response;
+      const orderExist = orders.length > 0;
       res.render("user/order-pageProfile", {
         loginheader: true,
         header: true,
@@ -443,7 +444,7 @@ module.exports = {
         cat,
         orders,
         hashedId,
-        username
+        username,orderExist
       });
     });
   },
@@ -463,6 +464,7 @@ module.exports = {
       let user;
       let username;
       let cat = [];
+      let walletExist
       if (req.session.user) {
         user = req.session.user._id;
          
@@ -473,8 +475,11 @@ module.exports = {
       userhelpers.balanceWallet(user).then((balance) => {
         // console.log(balance,"balamnce in waaaaaleettt");
         userhelpers.walletHistoty(user).then((history) => {
+          if (history.length > 0) {
+            walletExist = true; 
+          }
           console.log("historyy", history);
-          res.render("user/wallet", { balance, history, cat, header: true ,loginheader:true,username});
+          res.render("user/wallet", { balance, history, cat, header: true ,loginheader:true,username,walletExist});
         });
       });
     } catch (error) {
@@ -486,6 +491,7 @@ module.exports = {
       let cat = [];
       let user = req.session.user._id;
       let username;
+      let addressExist
       if (req.session.user) {
         user = req.session.user._id;
 
@@ -493,12 +499,15 @@ module.exports = {
       }
        cat = await adminhelpers.findAllcategories()
       userhelpers.getProfileAddress(user).then((address) => {
+        if (address.length > 0) {
+          addressExist=true
+        }
         res.render("user/pro-address", {
           address,
           cat,
           loginheader: true,
           header: true,
-          username
+          username,addressExist
         });
       });
     } catch (error) {

@@ -11,7 +11,7 @@
           <div class="row align-items-center">
             <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
               <span>
-                <i class="material-icons md-calendar_today"></i> <b><%= response[0].date %></b>
+                <i class="material-icons md-calendar_today"></i> <b><%= response[0].date.toDateString() %></b>
               </span> <br>
               <small class="text-muted">Order ID: <%= response[0]._id %></small>
             </div>
