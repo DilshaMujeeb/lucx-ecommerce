@@ -47,7 +47,7 @@ module.exports = {
         loginheader: true,
         header: true,
         loginStatus: true,
-        username,
+        username
       });
     } else {
       res.render("user/login");
