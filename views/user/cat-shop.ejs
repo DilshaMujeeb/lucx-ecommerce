@@ -154,7 +154,13 @@
             <a href="#"> Our location </a>
           </div>
           <div class="single-mobile-header-info">
-            <a href="/login">Log In / Sign Up </a>
+          <% if(locals.loginheader){%>
+            <a href="/logout">Log Out </a>
+            <%}
+                      else{%>
+                      <a href="/login">Log In/Sign Up </a>
+                      <%}
+                        %>
           </div>
           <div class="single-mobile-header-info">
             <a href="#">(+01) - 2345 - 6789 </a>

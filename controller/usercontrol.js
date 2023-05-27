@@ -755,12 +755,16 @@ module.exports = {
   getOrderlist:async (req, res) => {
     let cat=[]
     let userId;
+    let orderExist
     if (req.session.user) {
       userId = req.session.user._id;
     }
      cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
+      if (response.length > 0) {
+        orderExist=true
+      }
       const { order, orders, hashedId } = response;
       res.render("user/order-page", {
         loginheader: true,
@@ -768,7 +772,7 @@ module.exports = {
         order,
         orders,
         hashedId,
-        cat
+        cat,orderExist
       });
     });
   },

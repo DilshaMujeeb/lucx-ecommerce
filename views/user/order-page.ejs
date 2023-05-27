@@ -1,6 +1,8 @@
+
+<main class="main">
 <section>
     <div class="container">
-      
+      <% if (orderExist) { %>
       <table class="table mt-5" id="ordersTable">
         <thead>
           <tr>
@@ -28,6 +30,20 @@
   <%})%>
           </tbody>
       </table>
+              <%}else{%>
+          <div class="text-center">
+  <div style="display: flex; align-items: center; justify-content: flex-start;">
+    <img src="/assets/imgs/items/no_orders.png" style="width: 80px; height: 80px" alt="no_orderr">
+    <h3 style="margin-left: 10px;">No orders yet</h3>
+  </div>
+  <div style="text-align: right; margin-top: 10px;">
+    <a href="/shop" class="btn btn-primary">
+      <i class="fi-rs-box-alt mr-10"></i>Continue Shopping
+    </a>
+  </div>
+</div>
+       <% }%>
+
     </div>
     <div class="mobile-header-active mobile-header-wrapper-style">
     <div class="mobile-header-wrapper-inner">
@@ -105,7 +121,13 @@
             <a href="#"> Our location </a>
           </div>
           <div class="single-mobile-header-info">
-            <a href="/login">Log In / Sign Up </a>
+           <% if(locals.loginheader){%>
+            <a href="/logout">Log Out </a>
+            <%}
+                      else{%>
+                      <a href="/login">Log In/Sign Up </a>
+                      <%}
+                        %>
           </div>
           <div class="single-mobile-header-info">
             <a href="#">(+01) - 2345 - 6789 </a>
@@ -131,3 +153,4 @@
     </div>
   </div>
   </section>
+</main>

@@ -1,4 +1,33 @@
-<section style="margin-top:234px; margin-bottom:250px">
-    <h1 style="text-align: center; margin-top:50px;">Order Placed Successfully</h1>
-    <a href="/order-page" style="margin-left:681px; margin-top:20px;" class="btn btn-primary">View Orders</a>
+<section class="section-wrapper">
+  <h1 class="heading-center">Order Placed Successfully</h1>
+  <div class="button-center">
+    <a href="/order-page" class="btn btn-primary">View Orders</a>
+  </div>
 </section>
+
+<style>
+  .section-wrapper {
+    margin-top: 234px;
+    margin-bottom: 250px;
+  }
+  
+  .heading-center {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .button-center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .section-wrapper {
+      margin-top: 100px;
+      margin-bottom: 150px;
+    }
+  }
+</style>
