@@ -762,10 +762,9 @@ module.exports = {
      cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
-      if (response.length > 0) {
-        orderExist=true
-      }
+
       const { order, orders, hashedId } = response;
+      const orderExist = orders.length > 0;
       res.render("user/order-page", {
         loginheader: true,
         header: true,

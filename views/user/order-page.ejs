@@ -2,7 +2,7 @@
 <main class="main">
 <section>
     <div class="container">
-      <% if (orderExist) { %>
+      <%if(orderExist){%>
       <table class="table mt-5" id="ordersTable">
         <thead>
           <tr>
@@ -30,8 +30,8 @@
   <%})%>
           </tbody>
       </table>
-              <%}else{%>
-          <div class="text-center">
+      <%}else{%>
+               <div class="text-center">
   <div style="display: flex; align-items: center; justify-content: flex-start;">
     <img src="/assets/imgs/items/no_orders.png" style="width: 80px; height: 80px" alt="no_orderr">
     <h3 style="margin-left: 10px;">No orders yet</h3>
@@ -121,13 +121,7 @@
             <a href="#"> Our location </a>
           </div>
           <div class="single-mobile-header-info">
-           <% if(locals.loginheader){%>
-            <a href="/logout">Log Out </a>
-            <%}
-                      else{%>
-                      <a href="/login">Log In/Sign Up </a>
-                      <%}
-                        %>
+            <a href="page-login-register.html">Log In / Sign Up </a>
           </div>
           <div class="single-mobile-header-info">
             <a href="#">(+01) - 2345 - 6789 </a>
