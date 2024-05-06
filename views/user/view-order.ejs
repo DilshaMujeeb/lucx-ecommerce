@@ -44,8 +44,8 @@
                   <div class="text">
                     <h6 class="mb-1">Deliver to</h6>
                     <p class="mb-1">
-                      <%= response[0].ordAddrs[0].homeAddress1 %>
-                      <br><%= response[0].ordAddrs[0].homeAddress2 %><br><%= response[0].ordAddrs[0].city %><br><%= response[0].ordAddrs[0].state %><br><%= response[0].ordAddrs[0].zip %>
+                      <%= response[0].ordAddrs[0]?.homeAddress1 %>
+                      <br><%= response[0].ordAddrs[0]?.homeAddress2 %><br><%= response[0].ordAddrs[0]?.city %><br><%= response[0].ordAddrs[0]?.state %><br><%= response[0].ordAddrs[0]?.zip %>
                     </p>
                     <a href="/profile">View profile</a>
                   </div>

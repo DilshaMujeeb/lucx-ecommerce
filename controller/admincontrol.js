@@ -1,21 +1,19 @@
-const adminHelper = require('../helpers/adminHelpers')
-const userHelpers = require('../helpers/userHelpers')
-const db =require('../model/connection')
-const multer = require('multer')
+const adminHelper = require("../helpers/adminHelpers");
+const userHelpers = require("../helpers/userHelpers");
+const db = require("../model/connection");
+const multer = require("multer");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-
-const adminCredential={
-    name:'superAdmin',
-    email:'admin@gmail.com',
-    password:'admin123'
-   }
-   let adminStatus
+const adminCredential = {
+  name: "superAdmin",
+  email: "admin@gmail.com",
+  password: "admin123",
+};
+let adminStatus;
 
 module.exports = {
   showDashboard: (req, res) => {
     try {
-      
       let check = req.session.adminIn;
       let adminStatus = true;
       adminHelper
@@ -449,44 +447,38 @@ module.exports = {
     }
   },
   postAddoffer: (req, res) => {
-      try {
-        // const { offerType, offerValue, offerCode, product, category } = req.body;
-        console.log(req.body, "reqqqqqqqqqqq");
-        let proId = req.body.product
-        console.log(proId);
-        adminHelper.postAddOffers(req.body).then((response) => {
-          console.log("response._id", response._id);
-          adminHelper.updateProOffer(proId, response._id).then((response) => {
-            res.redirect("/admin/offer-list")
-          })
-          
-        })
+    try {
+      // const { offerType, offerValue, offerCode, product, category } = req.body;
+      console.log(req.body, "reqqqqqqqqqqq");
+      let proId = req.body.product;
+      console.log(proId);
+      adminHelper.postAddOffers(req.body).then((response) => {
+        console.log("response._id", response._id);
+        adminHelper.updateProOffer(proId, response._id).then((response) => {
+          res.redirect("/admin/offer-list");
+        });
+      });
 
-        // res.status(200).send("Offer added successfully");
-      } catch (error) {
-        console.log(error);
-      }
-    
+      // res.status(200).send("Offer added successfully");
+    } catch (error) {
+      console.log(error);
+    }
   },
-  getOfferList:async (req, res) => {
+  getOfferList: async (req, res) => {
     try {
       console.log("jaaaaaaaaaaaaiiiiiii");
-      const products = await adminHelper.getProductOffer()
-      const categories = await adminHelper.getCategoryOffer()
+      const products = await adminHelper.getProductOffer();
+      const categories = await adminHelper.getCategoryOffer();
       console.log(products, "product");
       console.log(categories, "categoryy ");
       res.render("admin/offer-list", {
         products,
         categories,
         layout: "adminLayout",
-        adminStatus
+        adminStatus,
       });
     } catch (error) {
       console.log(error);
     }
-  }
-
+  },
 };
-
-
-    

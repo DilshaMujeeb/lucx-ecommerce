@@ -4,12 +4,15 @@ const { user, cart } = require("../model/connection");
 const db = require("../model/connection");
 const { ObjectId } = require("mongodb");
 const { ObjectID } = require("bson");
-const Razorpay = require('razorpay');
+const Razorpay = require("razorpay");
 const { resolve } = require("path");
 const crypto = require("crypto");
 const swal = require("sweetalert");
 
-var instance = new Razorpay({ key_id: 'rzp_test_JVphB4kr5MLSJN', key_secret: '8jnXasIIogpC24le3C5Sp6in' })
+var instance = new Razorpay({
+  key_id: "rzp_test_JVphB4kr5MLSJN",
+  key_secret: "8jnXasIIogpC24le3C5Sp6in",
+});
 
 module.exports = {
   doSignUp: (userData) => {
@@ -68,7 +71,7 @@ module.exports = {
   },
 
   listProductShop: async (page, searchQuery, filters, categoryId) => {
-    console.log("ddddddddddiiiiiiiii",categoryId);
+    console.log("ddddddddddiiiiiiiii", categoryId);
     try {
       const pageSize = 10; // Number of products to display per page
       const skip = (page - 1) * pageSize; // Calculate the number of products to skip based on the current page
@@ -86,12 +89,11 @@ module.exports = {
       // if (filters && filters.category) {
       //   query.category = filters.category;
       // }
-      
+
       // if (categoryId) {
       //   console.log("category");
       //   const category = await db.products.find({ category: categoryId });
-       
-        
+
       // }
       const totalCount = await db.products.countDocuments(query);
       const totalPages = Math.ceil(totalCount / pageSize);
@@ -101,7 +103,6 @@ module.exports = {
         .populate("offer")
         .skip(skip)
         .limit(pageSize);
-        
 
       return {
         productList,
@@ -112,8 +113,6 @@ module.exports = {
     }
   },
 
-
-
   //list and unlist
   productList: async () => {
     try {
@@ -123,13 +122,15 @@ module.exports = {
       throw new Error(err);
     }
   },
-  
+
   categoryMatch: async (catid) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const category = await db.category.findOne({ _id: catid })
+        const category = await db.category.findOne({ _id: catid });
         if (category) {
-          const productList = await db.products.find({ category: category.CategoryName })
+          const productList = await db.products.find({
+            category: category.CategoryName,
+          });
           resolve(productList);
         } else {
           res.render("error", {
@@ -138,9 +139,8 @@ module.exports = {
         }
       } catch (error) {
         console.log(error);
-        
       }
-    })
+    });
   },
 
   otpverification: (otpvariable) => {
@@ -197,7 +197,7 @@ module.exports = {
                 if (err) {
                   console.log(err);
                 }
-              }
+              },
             );
           } else {
             db.cart.findOneAndUpdate(
@@ -207,7 +207,7 @@ module.exports = {
                 if (err) {
                   console.log(err);
                 }
-              }
+              },
             );
           }
         }
@@ -219,7 +219,7 @@ module.exports = {
             if (err) {
               console.log(err);
             }
-          }
+          },
         );
         resolve({ status: true });
       } else {
@@ -353,12 +353,12 @@ module.exports = {
             { _id: ObjectId(details.cart) },
             {
               $pull: { products: { item: ObjectId(details.product) } },
-            }
+            },
           )
           .then((response) => {
             db.products.updateOne(
               { _id: ObjectId(details.product) },
-              { $inc: { Quantity: count } }
+              { $inc: { Quantity: count } },
             );
             resolve({ removeProduct: true });
           })
@@ -379,13 +379,13 @@ module.exports = {
                   },
                   {
                     $inc: { "products.$.quantity": count },
-                  }
+                  },
                 )
                 .then((response) => {
                   db.products
                     .updateOne(
                       { _id: ObjectId(details.product) },
-                      { $inc: { Quantity: -count } }
+                      { $inc: { Quantity: -count } },
                     )
                     .then(() => {
                       resolve({ status: true });
@@ -573,20 +573,20 @@ module.exports = {
           userid: userid,
           "products.product": ObjectId(productid),
         },
-        { "products.$": 1 }
+        { "products.$": 1 },
       );
 
       const removedQuantity = cartProduct.products[0].quantity;
       db.cart
         .updateOne(
           { userid: userid, "products.product": ObjectId(productid) },
-          { $pull: { products: { product: ObjectId(productid) } } }
+          { $pull: { products: { product: ObjectId(productid) } } },
         )
         .then((response) => {
           db.products
             .findOneAndUpdate(
               { _id: ObjectId(productid) },
-              { $inc: { Quantity: removedQuantity } }
+              { $inc: { Quantity: removedQuantity } },
             )
             .then(() => {
               resolve(response);
@@ -660,7 +660,7 @@ module.exports = {
               state: data.state,
               zip: data.zipcode,
             },
-          }
+          },
         );
         console.log(response);
         resolve();
@@ -684,11 +684,11 @@ module.exports = {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(
           details.newPassword,
-          saltRounds
+          saltRounds,
         );
         const updatedUser = await db.user.updateOne(
           { _id: userId },
-          { Password: hashedPassword }
+          { Password: hashedPassword },
         );
         resolve(updatedUser);
         return updatedUser.nModified === 1;
@@ -757,7 +757,7 @@ module.exports = {
       try {
         await db.order.updateOne(
           { userid: ObjectId(userId) },
-          { $set: { status: "pending" } }
+          { $set: { status: "pending" } },
         );
       } catch (error) {}
     });
@@ -788,7 +788,7 @@ module.exports = {
       hmac.update(
         details["payment[razorpay_order_id]"] +
           "|" +
-          details["payment[razorpay_payment_id]"]
+          details["payment[razorpay_payment_id]"],
       );
       hmac = hmac.digest("hex");
       if (hmac == details["payment[razorpay_signature]"]) {
@@ -904,13 +904,14 @@ module.exports = {
       }
     });
   },
+  // Assuming you have access to the necessary dependencies and models
+
+  // Helper function to get usedCoupon details
+
   getViewproducts: (orderId) => {
     return new Promise(async (resolve, reject) => {
       let orderDetails = await db.order.findOne({ _id: ObjectId(orderId) });
       console.log(orderDetails, "prroooooooo");
-      // console.log(orderDetails.products[0]);
-      //in productDetails address is in the form of objectId so we waant to find out the address in the order using aggregation and call it
-      //in the controller
       resolve(orderDetails);
       console.log("order details in get view products:", orderDetails);
     });
@@ -967,7 +968,7 @@ module.exports = {
       if (userWallet) {
         const response = await db.wallet.updateOne(
           { userid: userId },
-          { $inc: { balance: total } }
+          { $inc: { balance: total } },
         );
 
         const historyObj = {
@@ -1034,13 +1035,13 @@ module.exports = {
     }
   },
 
-  couponMatch: (couponCode,user) => {
+  couponMatch: (couponCode, user) => {
     try {
       console.log("inside coupon,atch");
       return new Promise(async (resolve, reject) => {
         const couponExist = await db.coupon.findOne({ code: couponCode });
-        const userExist = await db.user.find({ _id: user })
-        if (couponExist&&userExist) {
+        const userExist = await db.user.find({ _id: user });
+        if (couponExist && userExist) {
           const couponAlreadyExist = await db.user.findOne({
             "usedCoupons.couponCode": couponCode,
           });
@@ -1053,8 +1054,6 @@ module.exports = {
         } else {
           reject(new Error("Invalid coupon or user"));
         }
-          
-        
       });
     } catch (error) {
       console.log(error);
@@ -1068,7 +1067,7 @@ module.exports = {
       } catch (error) {}
     });
   },
-  usedCoupons: (userid,couponCode, currentDate) => {
+  usedCoupons: (userid, couponCode, currentDate) => {
     return new Promise(async (resolve, reject) => {
       await db.user.findOneAndUpdate(
         { _id: userid },
@@ -1076,16 +1075,16 @@ module.exports = {
           $push: {
             usedCoupons: { couponCode: couponCode, appliedAt: currentDate },
           },
-        }
+        },
       );
-    })
+    });
   },
 
   updateField: (proId, discountedPrice) => {
     return new Promise(async (resolve, reject) => {
       await db.products.updateMany(
         { _id: proId },
-        { $set: { hasDiscount: true, discountedPrice: discountedPrice } }
+        { $set: { hasDiscount: true, discountedPrice: discountedPrice } },
       );
     }).then((response) => {
       resolve();

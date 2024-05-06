@@ -24,7 +24,7 @@ module.exports = {
 
         res.render("user/userhome", {
           loginheader: true,
-          header:true,
+          header: true,
           proCount,
           username,
           cat: cat,
@@ -47,7 +47,7 @@ module.exports = {
         loginheader: true,
         header: true,
         loginStatus: true,
-        username
+        username,
       });
     } else {
       res.render("user/login");
@@ -95,7 +95,7 @@ module.exports = {
           page,
           searchQuery,
           sortCriteria,
-          filters
+          filters,
         );
         cat = await adminhelpers.findAllcategories();
         for (let i = 0; i < products.length; i++) {
@@ -132,7 +132,7 @@ module.exports = {
           page,
           searchQuery,
           sortCriteria,
-          filters
+          filters,
         );
         console.log("products", products);
         cat = await adminhelpers.findAllcategories();
@@ -172,33 +172,32 @@ module.exports = {
   },
 
   category: async (req, res) => {
-    let username
+    let username;
     if (req.session.user) {
-      username = req.session.user.username
-       let cat = [];
-       cat = await adminhelpers.findAllcategories();
-       const products = await userhelpers.categoryMatch(req.params.id);
-       console.log(products, "cat");
-       res.render("user/cat-shop", {
-         products,
-         cat,
-         header: true,
-         loginheader:true,username
-       });
+      username = req.session.user.username;
+      let cat = [];
+      cat = await adminhelpers.findAllcategories();
+      const products = await userhelpers.categoryMatch(req.params.id);
+      console.log(products, "cat");
+      res.render("user/cat-shop", {
+        products,
+        cat,
+        header: true,
+        loginheader: true,
+        username,
+      });
+    } else {
+      let cat = [];
+      cat = await adminhelpers.findAllcategories();
+      const products = await userhelpers.categoryMatch(req.params.id);
+      console.log(products, "cat");
+      res.render("user/cat-shop", {
+        products,
+        cat,
+        header: true,
+        loginheader: false,
+      });
     }
-    else {
-       let cat = [];
-       cat = await adminhelpers.findAllcategories();
-       const products = await userhelpers.categoryMatch(req.params.id);
-       console.log(products, "cat");
-       res.render("user/cat-shop", {
-         products,
-         cat,
-         header: true,
-         loginheader: false
-       });
-    }
-   
   },
 
   //list and unslist
@@ -208,7 +207,7 @@ module.exports = {
       .then((product) => {
         // filter out unlisted products
         const filteredProductList = productList.filter(
-          (product) => !product.unlist
+          (product) => !product.unlist,
         );
         res.render("user/shop", { productList: filteredProductList });
       })
@@ -256,12 +255,12 @@ module.exports = {
       }
     });
   },
-  zoomshopView:async (req, res) => {
-    let cat=[]
+  zoomshopView: async (req, res) => {
+    let cat = [];
     if (req.session.user) {
       let user = req.session.user._id;
       let username = req.session.user.username;
-       cat = await adminhelpers.findAllcategories()
+      cat = await adminhelpers.findAllcategories();
       userhelpers.getCartCount(user).then((proCount) => {
         userhelpers.zoomlistProductShop(req.params.id).then((response) => {
           console.log(response, "zooooooom");
@@ -271,7 +270,7 @@ module.exports = {
             loginheader: true,
             header: true,
             username,
-            cat
+            cat,
           });
         });
       });
@@ -284,7 +283,7 @@ module.exports = {
           response,
           loginheader: false,
           header: true,
-          cat
+          cat,
         });
       });
     }
@@ -355,37 +354,6 @@ module.exports = {
     });
   },
 
-  // cartCounts:(req,res)=>{
-  //   let user=req.session.user._id
-  //   console.log(user,"user in cartcount");
-  //   userhelpers.getCartCount(user).then((cartCount)=>{
-  //     console.log("cartcouint",cartCount)
-  //     res.render('user/cart',{cartCount})
-
-  //   })
-
-  //   },
-
-  // changeQuantity: async (req, res) => {
-  //   if (req.session.user) {
-  //     userId = req.session.user._id;
-  //   }
-
-  //   let count = parseInt(req.body.count);
-  //   let qty = parseInt(req.body.quantity);
-  //   console.log("count+qty", count + qty);
-  //   if (count + qty != 0) {
-  //     let response = await userhelpers.change_Quantity(req.body);
-  //     if (response.removeProduct == true) {
-  //       let removeResponse = true;
-
-  //       res.json({ removeResponse });
-  //     } else {
-  //       let removeResponse = false;
-  //       res.json({ removeResponse });
-  //     }
-  //   }
-  // },
   changeQuantity: (req, res) => {
     console.log(req.body);
     userhelpers.changeProductQuantity(req.body).then(async (response) => {
@@ -410,15 +378,16 @@ module.exports = {
   //USER PROFILE MANAGEMENT
   profilePage: async (req, res) => {
     let cat = [];
-    let username
+    let username;
     if (req.session.user) {
-      username = req.session.user.username
+      username = req.session.user.username;
       cat = await adminhelpers.findAllcategories();
 
       res.render("user/user-dashpro", {
         loginheader: true,
         header: true,
-        cat,username,
+        cat,
+        username,
         isUserProfile: true,
         activeLink: "user-dash",
       });
@@ -430,7 +399,7 @@ module.exports = {
     let username;
     if (req.session.user) {
       userId = req.session.user._id;
-        username = req.session.user.username;
+      username = req.session.user.username;
     }
     cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
@@ -444,19 +413,25 @@ module.exports = {
         cat,
         orders,
         hashedId,
-        username,orderExist
+        username,
+        orderExist,
       });
     });
   },
   userProfileDash: async (req, res) => {
     let cat = [];
     let username;
-     if (req.session.user) {
-       username = req.session.user.username;
-     }
-    
+    if (req.session.user) {
+      username = req.session.user.username;
+    }
+
     cat = await adminhelpers.findAllcategories();
-    res.render("user/user-dashpro1", { cat, header: true,loginheader:true,username });
+    res.render("user/user-dashpro1", {
+      cat,
+      header: true,
+      loginheader: true,
+      username,
+    });
   },
 
   walletDetails: async (req, res) => {
@@ -464,83 +439,95 @@ module.exports = {
       let user;
       let username;
       let cat = [];
-      let walletExist
+      let walletExist;
       if (req.session.user) {
         user = req.session.user._id;
-         
-         username = req.session.user.username;
-         
+
+        username = req.session.user.username;
       }
       cat = await adminhelpers.findAllcategories();
       userhelpers.balanceWallet(user).then((balance) => {
         // console.log(balance,"balamnce in waaaaaleettt");
         userhelpers.walletHistoty(user).then((history) => {
           if (history.length > 0) {
-            walletExist = true; 
+            walletExist = true;
           }
           console.log("historyy", history);
-          res.render("user/wallet", { balance, history, cat, header: true ,loginheader:true,username,walletExist});
+          res.render("user/wallet", {
+            balance,
+            history,
+            cat,
+            header: true,
+            loginheader: true,
+            username,
+            walletExist,
+          });
         });
       });
     } catch (error) {
       console.log(error);
     }
   },
-  getProfileAddress:async (req, res) => {
+  getProfileAddress: async (req, res) => {
     try {
       let cat = [];
       let user = req.session.user._id;
       let username;
-      let addressExist
+      let addressExist;
       if (req.session.user) {
         user = req.session.user._id;
 
         username = req.session.user.username;
       }
-       cat = await adminhelpers.findAllcategories()
+      cat = await adminhelpers.findAllcategories();
       userhelpers.getProfileAddress(user).then((address) => {
         if (address.length > 0) {
-          addressExist=true
+          addressExist = true;
         }
         res.render("user/pro-address", {
           address,
           cat,
           loginheader: true,
           header: true,
-          username,addressExist
+          username,
+          addressExist,
         });
       });
     } catch (error) {
       console.log(error);
     }
   },
-  goToAddaddressPage:async (req, res) => {
+  goToAddaddressPage: async (req, res) => {
     try {
       let cat = [];
-     let username
+      let username;
       if (req.session.user) {
         user = req.session.user._id;
 
         username = req.session.user.username;
       }
-        cat = await adminhelpers.findAllcategories();
-      res.render("user/pro-add-address",{header:true,cat,loginheader:true,username});
+      cat = await adminhelpers.findAllcategories();
+      res.render("user/pro-add-address", {
+        header: true,
+        cat,
+        loginheader: true,
+        username,
+      });
     } catch (error) {
       console.log(error);
     }
   },
 
-  postuserProfileAddress: async(req, res) => {
-   
+  postuserProfileAddress: async (req, res) => {
     try {
-      let user; 
-      let username
-       if (req.session.user) {
-         user = req.session.user._id;
+      let user;
+      let username;
+      if (req.session.user) {
+        user = req.session.user._id;
 
-         username = req.session.user.username;
-       }
-      
+        username = req.session.user.username;
+      }
+
       console.log(user, "userprofile");
       console.log(req.body, "requestbody");
       userhelpers.postProfileAddress(req.body, user).then((address) => {
@@ -551,24 +538,24 @@ module.exports = {
       console.log(error);
     }
   },
-  getEditAddress: async(req, res) => {
+  getEditAddress: async (req, res) => {
     console.log("lllllllllllllllllllllllll");
-    let user
+    let user;
     let username;
-    let cat=[]
+    let cat = [];
     if (req.session.user) {
       user = req.session.user._id;
 
       username = req.session.user.username;
     }
-     cat = await adminhelpers.findAllcategories()
+    cat = await adminhelpers.findAllcategories();
     userhelpers.editUserAddress(req.params.id).then((address) => {
       res.render("user/pro-address-edit", {
         loginheader: true,
         username,
         header: true,
         address,
-        cat
+        cat,
       });
     });
   },
@@ -587,18 +574,24 @@ module.exports = {
       res.json({ success: true });
     });
   },
-  accountDetailsPage:async (req, res) => {
+  accountDetailsPage: async (req, res) => {
     try {
       let cat = [];
       let user;
-      let username
+      let username;
       if (req.session.user) {
         user = req.session.user._id;
-        username= req.session.user.username
+        username = req.session.user.username;
       }
-       cat = await adminhelpers.findAllcategories()
+      cat = await adminhelpers.findAllcategories();
       userhelpers.getUserdetails(user).then((userDetails) => {
-        res.render("user/account-details", { userDetails,header:true,loginheader:true ,username,cat});
+        res.render("user/account-details", {
+          userDetails,
+          header: true,
+          loginheader: true,
+          username,
+          cat,
+        });
       });
     } catch (error) {
       console.log(error);
@@ -668,7 +661,6 @@ module.exports = {
         usern,
         user,
         loginheader: true,
-        
       });
       // console.log("helloooo",products,total,count,address,user);
     });
@@ -713,7 +705,7 @@ module.exports = {
 
       console.log(
         "555555555555555555555555555555555555555555555555555",
-        req.body
+        req.body,
       );
 
       userhelpers
@@ -723,18 +715,15 @@ module.exports = {
           console.log("orderid", orderId);
           console.log("cod orderId", orderId);
           if (req.body.paymentMethod === "COD") {
-            console.log("ggggggggggggggg");
+            console.log("ggggg gggggggggg");
             res.json({ codSuccess: true });
           } else if (req.body.paymentMethod === "ONLINE") {
-            console.log(
-              "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-            );
             userhelpers
               .generateRazorpay(orderId, total)
               .then((onlineResponse) => {
                 console.log(
                   "resssssssssponse.................>",
-                  onlineResponse
+                  onlineResponse,
                 );
 
                 res.json(onlineResponse);
@@ -752,14 +741,14 @@ module.exports = {
   },
 
   //here in order page we need to take the data grpm db to front page
-  getOrderlist:async (req, res) => {
-    let cat=[]
+  getOrderlist: async (req, res) => {
+    let cat = [];
     let userId;
-    let orderExist
+    let orderExist;
     if (req.session.user) {
       userId = req.session.user._id;
     }
-     cat = await adminhelpers.findAllcategories();
+    cat = await adminhelpers.findAllcategories();
     userhelpers.getOrderpage(userId).then((response) => {
       console.log("response in orderpage", response);
 
@@ -771,27 +760,29 @@ module.exports = {
         order,
         orders,
         hashedId,
-        cat,orderExist
+        cat,
+        orderExist,
       });
     });
   },
 
-  viewOrders:async(req, res) => {
+  viewOrders: async (req, res) => {
     console.log("haaaaaaaaaaaaiiiiiiii");
     let user, username;
-    let cat=[]
+    let cat = [];
     if (req.session.user) {
       user = req.session.user._id;
       username = req.session.user.username;
     }
-     cat = await adminhelpers.findAllcategories()
+    cat = await adminhelpers.findAllcategories();
+
+    // console.log("usedcoupon...........", usedCoupon);
     userhelpers.getViewproducts(req.params.id).then(async (response) => {
       console.log("response in ordervoiew", response);
 
       const { orderDetail, orderDetails, hashedId } = response;
 
       userhelpers.getAddress(req.params.id).then(async (response) => {
-        
         console.log("orderaddress", response[0].ordAddrs);
         res.render("user/view-order", {
           response,
@@ -801,7 +792,7 @@ module.exports = {
           orderDetail,
           orderDetails,
           hashedId,
-          cat
+          cat,
         });
         console.log("response in orderpage........", response);
       });

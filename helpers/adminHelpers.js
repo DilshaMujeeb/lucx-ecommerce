@@ -276,13 +276,11 @@ module.exports = {
         Image: filename,
         category: userData.category,
         Price: userData.Price,
-
       });
-    
-     
-        uploadedImage.save().then((data) => {
-          resolve(data);
-        });
+
+      uploadedImage.save().then((data) => {
+        resolve(data);
+      });
     });
   },
 
@@ -293,11 +291,10 @@ module.exports = {
       //   product.currentStockLevel = product.Quantity;
       //   await product.save();
       // }
-      
-          resolve(products);
-          console.log("helooo", products);
-        });
-    
+
+      resolve(products);
+      console.log("helooo", products);
+    });
   },
 
   // here no file images so data is only needed
@@ -355,13 +352,13 @@ module.exports = {
       try {
         const data = await db.category.updateOne(
           { _id: ObjectId(catId) },
-          { $set: { unlist: true } }
+          { $set: { unlist: true } },
         );
 
         // Unlist all products under this category
         await db.products.updateMany(
           { category: ObjectId(catId) },
-          { $set: { unlist: true } }
+          { $set: { unlist: true } },
         );
 
         resolve(data);
@@ -437,7 +434,7 @@ module.exports = {
               category: editedData.category,
               Image: filename,
             },
-          }
+          },
         )
         .then((response) => {
           console.log(response);
@@ -600,16 +597,16 @@ module.exports = {
       }
     });
   },
-  updateProOffer: (proId,offerId) => {
-    return new Promise(async (resolve, reject) => { 
+  updateProOffer: (proId, offerId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        await db.products.updateOne({ _id: proId }, { $set: { offer: offerId } }).then(response => {
-          resolve()
-        });
-      } catch (error) {
-        
-      }
-    })
+        await db.products
+          .updateOne({ _id: proId }, { $set: { offer: offerId } })
+          .then((response) => {
+            resolve();
+          });
+      } catch (error) {}
+    });
   },
 
   getProductOffer: () => {
@@ -647,7 +644,7 @@ module.exports = {
           ])
           .sort({ createdAt: -1 })
           .exec();
-        console.log(productOffers,"after aggreagation");
+        console.log(productOffers, "after aggreagation");
         resolve(productOffers);
       } catch (error) {
         console.log(error);
